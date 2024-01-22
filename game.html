@@ -52,13 +52,13 @@
 
       <!-- Bildecontainere for heroene -->
       <div class="img-container healer">
-        <img class="hero" src="assets/healer.png" />
+        <img id="blaze" class="hero" src="assets/healer.png" />
       </div>
       <div class="img-container archer">
-        <img class="hero" src="assets/archer.png" />
+        <img id="swift" class="hero" src="assets/archer.png" />
       </div>
       <div class="img-container warrior">
-        <img class="hero" src="assets/warrior.png" />
+        <img id="crystal" class="hero" src="assets/warrior.png" />
       </div>
 
       <!-- Bildecontainer for fienden -->
@@ -72,6 +72,12 @@
       //Denne JS-koden er laget klar for deg. Den trenger du ikke endre på.
 
       //Stats for heroes
+
+      const blaze = document.getElementById('blaze');
+      const swift = document.getElementById('swift');
+      const crystal = document.getElementById('crystal');
+
+
       let heroesArray = [
         {
           id: 0,
@@ -106,6 +112,9 @@
         damage: 200,
         alive: true,
       };
+
+
+
     </script>
   </body>
 </html>
