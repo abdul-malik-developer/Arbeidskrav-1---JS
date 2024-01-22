@@ -14,25 +14,25 @@
       <div class="hero-health-containers">
         <div class="healthbar-container">
           <!-- healer-health sin vidde må forandres for å endre lifebar -->
-          <div id="crystal-currentHp" class="healthbar healer-health"></div>
+          <div id="henriette-currentHp" class="healthbar healer-health"></div>
           <div class="text-container">
-            <p id="healer-name-txt">Crystal</p>
+            <p id="healer-name-txt">Henriette</p>
             <p id="healer-health-txt">400 / 400 HP</p>
           </div>
         </div>
         <div class="healthbar-container">
           <!-- archer-health sin vidde må forandres for å endre lifebar -->
-          <div id="blaze-currentHp" class="healthbar archer-health"></div>
+          <div id="ariana-currentHp" class="healthbar archer-health"></div>
           <div class="text-container">
-            <p id="archer-name-txt">Blaze</p>
+            <p id="archer-name-txt">Ariana</p>
             <p id="archer-health-txt">600 / 600 HP</p>
           </div>
         </div>
         <div class="healthbar-container">
           <!-- warrior-health sin vidde må forandres for å endre lifebar -->
-          <div id="swift-currentHp" class="healthbar warrior-health"></div>
+          <div id="wyona-currentHp" class="healthbar warrior-health"></div>
           <div class="text-container">
-            <p id="warrior-name-txt">Swift</p>
+            <p id="warrior-name-txt">Wyona</p>
             <p id="warrior-health-txt">800 / 800 HP</p>
           </div>
         </div>
@@ -42,29 +42,29 @@
       <div class="dragon-health-container">
         <div class="healthbar-container">
           <!-- dragon-health sin vidde må forandres for å endre lifebar -->
-          <div class="healthbar dragon-health"></div>
+          <div id="daar-currentHP" class="healthbar dragon-health"></div>
           <div class="text-container">
-            <p id="dragon-name-txt">Dragens navn</p>
-            <div class="text-container dragon-health-txt">2000 / 2000 HP</div>
+            <p id="dragon-name-txt">Daar</p>
+            <div id="dragon-health-txt" class="text-container dragon-health-txt">2000 / 2000 HP</div>
           </div>
         </div>
       </div>
 
       <!-- Bildecontainere for heroene -->
       <div class="img-container healer">
-        <img id="blaze" class="hero" src="assets/healer.png" />
+        <img id="henriette" class="hero" src="assets/healer.png" />
       </div>
       <div class="img-container archer">
-        <img id="swift" class="hero" src="assets/archer.png" />
+        <img id="ariana" class="hero" src="assets/archer.png" />
       </div>
       <div class="img-container warrior">
-        <img id="crystal" class="hero" src="assets/warrior.png" />
+        <img id="wyona" class="hero" src="assets/warrior.png" />
       </div>
 
       <!-- Bildecontainer for fienden -->
       <div class="enemy-container">
         <div class="img-container dragon-container">
-          <img class="dragon" src="assets/dragon.png" />
+          <img id="daar" class="dragon" src="assets/dragon.png" />
         </div>
       </div>
     </div>
@@ -73,19 +73,26 @@
 
       //Stats for heroes
 
-      const blaze = document.getElementById('blaze');
-      const swift = document.getElementById('swift');
-      const crystal = document.getElementById('crystal');
+      const arianaImg = document.getElementById('ariana');
+      const wyonaImg = document.getElementById('wyona');
+      const henrietteImg = document.getElementById('henriette');
 
-      let blazeCurrentHP = document.getElementById('blaze-currentHp');
-      let swiftCurrentHP = document.getElementById('swift-currentHp');
-      let crystalCurrentHP = document.getElementById('crystal-currentHp');
+      let arianaCurrentHP = document.getElementById('ariana-currentHp');
+      let wyonaCurrentHP = document.getElementById('wyona-currentHp');
+      let henrietteCurrentHP = document.getElementById('henriette-currentHp');
 
-      let crystalHealthTxt = document.getElementById('healer-health-txt');
-      let blazelHealthTxt = document.getElementById('archer-health-txt');
-      let warriorHealthTxt = document.getElementById('warrior-health-txt');
+      let henrietteHealthTxt = document.getElementById('healer-health-txt');
+      let arianalHealthTxt = document.getElementById('archer-health-txt');
+      let wyonaHealthTxt = document.getElementById('warrior-health-txt');
 
-      
+      const daarImg = document.getElementById('daar');
+      let daarCurrentHP = document.getElementById('daar-currentHP');
+      let daarHealthTxt = document.getElementById('dragon-health-txt');
+
+
+      const healthTxt = [henrietteHealthTxt, arianalHealthTxt, wyonaHealthTxt];
+      const heroImg = [henrietteImg, arianaImg,wyonaImg ];
+
 
       let heroesArray = [
         {
@@ -121,6 +128,76 @@
         damage: 200,
         alive: true,
       };
+
+      henrietteImg.addEventListener('click', heroHenriette)
+      arianaImg.addEventListener('click', heroAriana);
+      wyonaImg.addEventListener('click', heroWyona);
+
+
+      function heroAriana () {
+        performAttack(1)
+        dragonAttack()
+      }
+
+      function heroWyona () {
+        performAttack(2)
+        dragonAttack()
+      }
+
+      function heroHenriette () {
+        performAttack(0)
+        dragonAttack()
+      }
+
+      function performAttack (heroNum) {
+
+      let {name,maxHP,currentHP,damage,alive } =  heroesArray[heroNum];
+      
+      alert(`${name} har gjort ${damage} skade på ${dragonObject.name}`);
+
+      daarHealthTxt.textContent = `${dragonObject.currentHP -= damage} / 2000HP`;
+
+      }
+
+      function dragonAttack() {
+
+      let randomIndex; 
+
+      if(heroesArray.length > 1){
+        randomIndex = Math.floor(Math.random() * heroesArray.length);
+      } else {
+        randomIndex = 0;
+      }
+
+      let {name,maxHP,currentHP,damage,alive } =  heroesArray[randomIndex];
+
+      alert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`);
+
+      if (alive) {
+        currentHP -= dragonObject.damage;
+
+        currentHP = Math.max (currentHP, 0);
+
+        healthTxt[randomIndex].textContent = `${currentHP} / ${maxHP} HP`;
+
+        if (currentHP === 0) {
+          alive = false;
+          heroImg[randomIndex].remove();
+          healthTxt[randomIndex].parentNode.parentNode.remove();
+          heroesArray = heroesArray.filter(hero => hero.alive);
+        }
+      }
+
+      if (heroesArray === undefined){
+        alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`)
+      }
+
+      heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP, alive };
+      }
+
+  
+
+
 
 
 
