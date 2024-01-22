@@ -1,0 +1,104 @@
+/* Du skal IKKE style i CSS for å løse oppgavene */
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+p {
+  margin: 0;
+}
+
+.main-container {
+  border: 1px solid black;
+  width: 100%;
+  height: 100vh;
+  background-image: url("assets/background-img.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/* Healthbars */
+.hero-health-containers {
+  position: relative;
+  left: 1%;
+}
+
+.dragon-health-container {
+  position: absolute;
+  top: 0%;
+  right: 1%;
+  z-index: 1;
+}
+
+.healthbar-container {
+  margin-top: 10px;
+  width: 300px;
+  height: 50px;
+  border: 2px solid black;
+}
+
+.healthbar {
+  position: absolute;
+  height: 50px;
+  background-color: rgb(121, 192, 121);
+}
+
+.healer-health {
+  width: 300px;
+}
+
+.archer-health {
+  width: 300px;
+}
+
+.warrior-health {
+  width: 300px;
+}
+
+.dragon-health {
+  width: 300px;
+}
+
+.text-container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Characters */
+.img-container {
+  position: absolute;
+}
+
+.img-container:hover img {
+  transform: scale(1.1);
+}
+
+.healer {
+  bottom: 5%;
+  left: 3%;
+}
+
+.archer {
+  left: 13%;
+  bottom: 15%;
+}
+
+.warrior {
+  bottom: 5%;
+  left: 25%;
+}
+
+.hero {
+  height: 350px;
+}
+
+.dragon-container {
+  bottom: 10%;
+  right: 5%;
+}
+
+.dragon {
+  height: 800px;
+}
