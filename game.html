@@ -192,8 +192,25 @@
         alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`)
       }
 
+      if (dragonObject.currentHP <=0){
+        daarImg.remove()
+        daarHealthTxt.parentNode.parentNode.remove();
+        arianaImg.removeEventListener('click', heroAriana);
+        wyonaImg.removeEventListener('click', heroWyona);
+        henrietteImg.removeEventListener('click', heroHenriette);
+        setTimeout(() =>{
+          alert('gratulerer, du har vunnet spillet!');
+        }, 1500)
+      }
+
       heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP, alive };
       }
+
+      
+
+
+
+
 
   
 
