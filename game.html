@@ -135,18 +135,19 @@
 
 
       function heroAriana () {
-        performAttack(1)
-        dragonAttack()
+        performAttack(1);
+        dragonAttack();
       }
 
       function heroWyona () {
-        performAttack(2)
-        dragonAttack()
+        performAttack(2);
+        dragonAttack();
       }
 
       function heroHenriette () {
-        performAttack(0)
-        dragonAttack()
+        performAttack(0);
+        dragonAttack();
+        healerBoost();
       }
 
       function performAttack (heroNum) {
@@ -199,24 +200,24 @@
         wyonaImg.removeEventListener('click', heroWyona);
         henrietteImg.removeEventListener('click', heroHenriette);
         setTimeout(() =>{
-          alert('gratulerer, du har vunnet spillet!');
+          alert('Gratulerer, du har vunnet spillet!');
         }, 1500)
       }
 
       heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP, alive };
       }
 
+      function healerBoost() {
       
+      heroesArray.forEach((hero,index) =>{
+        if( hero.alive && hero.currentHP < hero.maxHP){
+          hero.currentHP = Math.min(hero.currentHP + 100, hero.maxHP);
+          healthTxt[index].textContent = `${hero.currentHP} / ${hero.maxHP} HP`
+        }
+      })
 
-
-
-
-
-  
-
-
-
-
+      
+      }
 
     </script>
   </body>
