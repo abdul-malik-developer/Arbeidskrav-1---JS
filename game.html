@@ -52,13 +52,13 @@
 
       <!-- Bildecontainere for heroene -->
       <div class="img-container healer">
-        <img id="henriette" class="hero" src="assets/healer.png" />
+        <img class="hero" src="assets/healer.png" />
       </div>
       <div class="img-container archer">
-        <img id="ariana" class="hero" src="assets/archer.png" />
+        <img class="hero" src="assets/archer.png" />
       </div>
       <div class="img-container warrior">
-        <img id="wyona" class="hero" src="assets/warrior.png" />
+        <img class="hero" src="assets/warrior.png" />
       </div>
 
       <!-- Bildecontainer for fienden -->
@@ -73,13 +73,17 @@
 
       //Stats for heroes
 
-      const arianaImg = document.getElementById('ariana');
-      const wyonaImg = document.getElementById('wyona');
-      const henrietteImg = document.getElementById('henriette');
+      // const arianaImg = document.getElementById('ariana');
+      const arianaImg = document.getElementsByClassName('hero')[0];
+      const wyonaImg = document.getElementsByClassName('hero')[1];
+      const henrietteImg = document.getElementsByClassName('hero')[2];
 
-      let arianaCurrentHP = document.getElementById('ariana-currentHp');
-      let wyonaCurrentHP = document.getElementById('wyona-currentHp');
-      let henrietteCurrentHP = document.getElementById('henriette-currentHp');
+      let healthBars = document.getElementsByClassName('healthbar');
+      let henrietteCurrentHP = healthBars[0];
+      let arianaCurrentHP = healthBars[1];
+      let wyonaCurrentHP = healthBars[2];
+
+
 
       let henrietteHealthTxt = document.getElementById('healer-health-txt');
       let arianalHealthTxt = document.getElementById('archer-health-txt');
@@ -91,7 +95,8 @@
 
 
       const healthTxt = [henrietteHealthTxt, arianalHealthTxt, wyonaHealthTxt];
-      const heroImg = [henrietteImg, arianaImg,wyonaImg ];
+      const heroImg = [henrietteImg, arianaImg,wyonaImg];
+      const healthColor = [henrietteCurrentHP,arianaCurrentHP,wyonaCurrentHP];
 
 
       let heroesArray = [
@@ -161,7 +166,6 @@
       }
 
       function dragonAttack() {
-
       let randomIndex; 
 
       if(heroesArray.length > 1){
@@ -179,7 +183,7 @@
 
         currentHP = Math.max (currentHP, 0);
 
-        healthTxt[randomIndex].textContent = `${currentHP} / ${maxHP} HP`;
+        healthBarColor(randomIndex, currentHP, maxHP);
 
         if (currentHP === 0) {
           alive = false;
@@ -205,18 +209,27 @@
       }
 
       heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP, alive };
-      }
+
+    }
 
       function healerBoost() {
-      
       heroesArray.forEach((hero,index) =>{
         if( hero.alive && hero.currentHP < hero.maxHP){
           hero.currentHP = Math.min(hero.currentHP + 100, hero.maxHP);
-          healthTxt[index].textContent = `${hero.currentHP} / ${hero.maxHP} HP`
+          healthTxt[index].textContent = `${hero.currentHP} / ${hero.maxHP} HP`;
+          healthBarColor(index, hero.currentHP, hero.maxHP);
         }
       })
+      }
 
-      
+      function healthBarColor(index, currentHP, maxHP) {
+      healthTxt[index].textContent = `${currentHP} / ${maxHP} HP`;
+      let heightPercentage = (currentHP / maxHP) * 100;
+      let healthBars = document.getElementsByClassName('healthbar');
+      let currentHealthBar = healthBars[index];
+      const fixedHeight = 50;
+      const heightInPixels = (heightPercentage / 100) * fixedHeight;
+      currentHealthBar.style.height = `${heightInPixels}px`;
       }
 
     </script>
