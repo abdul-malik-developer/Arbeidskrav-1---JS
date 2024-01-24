@@ -55,6 +55,17 @@ henrietteImg.addEventListener('click', heroHenriette)
 arianaImg.addEventListener('click', heroAriana);
 wyonaImg.addEventListener('click', heroWyona);
 
+// 🔘 creating the damage boost 10% 
+document.body.addEventListener('keydown', (event) => {
+    if (event.key === 'd') {
+      heroesArray.forEach((hero, index) => {
+        let boostedDamage = Math.floor(hero.damage * 1.1);
+        heroesArray[index] = { ...heroesArray[index], damage: boostedDamage };
+      });
+    }
+  });
+  
+
 
 function heroHenriette () {
   performAttack(0);

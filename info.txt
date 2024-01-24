@@ -1,0 +1,1 @@
+Reason way the healing color is going up over is because of the height property inside of healthbar;
