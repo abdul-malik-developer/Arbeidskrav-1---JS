@@ -101,6 +101,9 @@ showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, '#FFD700
 // alert(`${name} har gjort ${damage} skade på ${dragonObject.name}`);
 
 daarHealthTxt.textContent = `${dragonObject.currentHP -= damage} / 2000HP`;
+if (dragonObject.alive){
+    DragonHealthBarColor(dragonObject.currentHP, dragonObject.maxHP);
+}
 
 }
 
@@ -167,13 +170,22 @@ if (hero.alive && hero.currentHP < hero.maxHP) {
 });
 }
 
-function healthBarColor(index, currentHP, maxHP ) {
+function healthBarColor(index, currentHP, maxHP) {
 let heightPercentage = (currentHP / maxHP) * 100;
 let healthBars = document.getElementsByClassName('healthbar');
 let currentHealthBar = healthBars[index];
 const fixedHeight = 50;
 const heightInPixels = (heightPercentage / 100) * fixedHeight;
 currentHealthBar.style.height = `${heightInPixels}px`;
+}
+
+function DragonHealthBarColor(currentHP,maxHP) {
+    let heightPercentage = (currentHP / maxHP) * 100;
+    let healthBars = document.getElementsByClassName('healthbar')[3];
+    let currentHealthBar = healthBars;
+    const fixedHeight = 50;
+    const heightInPixels = (heightPercentage / 100) * fixedHeight;
+    currentHealthBar.style.height = `${heightInPixels}px`;
 }
 
 function showAlert(message, color) {
@@ -197,14 +209,10 @@ function showAlert(message, color) {
     color: #868686;
     opacity: 1;
     transition: opacity 1s ease-out;
-  `);
+    `);
     document.body.appendChild(alertContainer);
 
     setTimeout(() => {
         alertContainer.style.opacity = '0';
-      }, 1000);
-
-    // setTimeout(() =>{
-    //     alertContainer.remove()
-    // }, 3000)
+    }, 1000);
 }
