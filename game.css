@@ -69,6 +69,7 @@ p {
 /* Characters */
 .img-container {
   position: absolute;
+  cursor: pointer;
 }
 
 .img-container:hover img {

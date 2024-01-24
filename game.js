@@ -16,6 +16,15 @@ const healthTxt = [henrietteHealthTxt, arianalHealthTxt, wyonaHealthTxt];
 const heroImg = [henrietteImg, arianaImg,wyonaImg];
 
 
+// Creating the font-family;
+const linkElement = document.createElement('link');
+linkElement.rel = 'stylesheet';
+linkElement.href = 'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Rubik+Doodle+Shadow&display=swap';
+document.head.appendChild(linkElement);
+document.body.style.fontFamily = "'Cinzel Decorative', serif";
+document.body.style.fontSize = "16px";
+
+
 let heroesArray = [
   {
     id: 0,
@@ -58,36 +67,38 @@ wyonaImg.addEventListener('click', heroWyona);
 // 🔘 creating the damage boost 10% 
 document.body.addEventListener('keydown', (event) => {
     if (event.key === 'd') {
-      heroesArray.forEach((hero, index) => {
+        heroesArray.forEach((hero, index) => {
         let boostedDamage = Math.floor(hero.damage * 1.1);
         heroesArray[index] = { ...heroesArray[index], damage: boostedDamage };
-      });
+        });
     }
-  });
-  
+    });
+
 
 
 function heroHenriette () {
-  performAttack(0);
-  dragonAttack();
-  healerBoost();
+    performAttack(0);
+    setTimeout(dragonAttack, 2000);
+    healerBoost();
 }
 
 function heroAriana () {
-  performAttack(1);
-  dragonAttack();
+    performAttack(1);
+    setTimeout(dragonAttack,2500);
 }
 
 function heroWyona () {
-  performAttack(2);
-  dragonAttack();
+    performAttack(2);
+    setTimeout(dragonAttack,2500);
 }
 
 function performAttack (heroNum) {
 
 let {name,maxHP,currentHP,damage,alive } =  heroesArray[heroNum];
 
-alert(`${name} har gjort ${damage} skade på ${dragonObject.name}`);
+showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, '#FFD700')
+
+// alert(`${name} har gjort ${damage} skade på ${dragonObject.name}`);
 
 daarHealthTxt.textContent = `${dragonObject.currentHP -= damage} / 2000HP`;
 
@@ -105,7 +116,9 @@ if (heroesArray.length > 1) {
 
 let { name, maxHP, currentHP, damage } = heroesArray[randomIndex];
 
-alert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`);
+showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
+
+// alert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`);
 
 if (heroesArray[randomIndex].alive) {
   currentHP -= dragonObject.damage;
@@ -143,9 +156,13 @@ heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP };
 function healerBoost() {
 heroesArray.forEach((hero, index) => {
 if (hero.alive && hero.currentHP < hero.maxHP) {
-  hero.currentHP = Math.min(hero.currentHP + 100, hero.maxHP);
-  healthTxt[index].textContent = `${hero.currentHP} / ${hero.maxHP} HP`;
-  healthBarColor(index, hero.currentHP, hero.maxHP)
+    hero.currentHP = Math.min(hero.currentHP + 100, hero.maxHP);
+    healthTxt[index].style.color = 'blue';
+    setTimeout(() =>{
+        healthTxt[index].style.color = 'black';
+    },1000)
+    healthTxt[index].textContent = `${hero.currentHP} / ${hero.maxHP} HP`;
+    healthBarColor(index, hero.currentHP, hero.maxHP)
 }
 });
 }
@@ -157,4 +174,37 @@ let currentHealthBar = healthBars[index];
 const fixedHeight = 50;
 const heightInPixels = (heightPercentage / 100) * fixedHeight;
 currentHealthBar.style.height = `${heightInPixels}px`;
+}
+
+function showAlert(message, color) {
+    const alertContainer = document.createElement('div');
+    let h1 = document.createElement('h1');
+    h1.textContent = message;
+
+    alertContainer.appendChild(h1);
+
+    alertContainer.setAttribute('style', `
+    position: fixed;
+    top: 350px;
+    left: 36%;
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+    border-radius: 10px; 
+    box-shadow: 0 5px 2px 0 #00000022;
+    background-color: ${color}; 
+    font-size: 0.6rem;
+    color: #868686;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+  `);
+    document.body.appendChild(alertContainer);
+
+    setTimeout(() => {
+        alertContainer.style.opacity = '0';
+      }, 1000);
+
+    // setTimeout(() =>{
+    //     alertContainer.remove()
+    // }, 3000)
 }
