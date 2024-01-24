@@ -78,18 +78,49 @@ document.body.addEventListener('keydown', (event) => {
 
 function heroHenriette () {
     performAttack(0);
-    setTimeout(dragonAttack, 2000);
     healerBoost();
 }
 
-function heroAriana () {
-    performAttack(1);
-    setTimeout(dragonAttack,2500);
-}
+    function heroAriana() {
+        performAttack(1);
+    
+        if (dragonObject.currentHP > 400) {
+        setTimeout(() => {
+            dragonAttack();
+        }, 2500);
+        } else {
+        if (dragonObject.currentHP <= 0) {
+            daarImg.remove();
+            daarHealthTxt.parentNode.parentNode.remove();
+            arianaImg.removeEventListener('click', heroAriana);
+            wyonaImg.removeEventListener('click', heroWyona);
+            henrietteImg.removeEventListener('click', heroHenriette);
+            setTimeout(() => {
+            alert('Gratulerer, du har vunnet spillet!');
+            }, 1500);
+        }
+        }
+    }
+    
 
 function heroWyona () {
     performAttack(2);
-    setTimeout(dragonAttack,2500);
+    if (dragonObject.currentHP >= 400) {
+        setTimeout(() => {
+            dragonAttack();
+        }, 2500);
+        } else {
+        if (dragonObject.currentHP <= 0) {
+            daarImg.remove();
+            daarHealthTxt.parentNode.parentNode.remove();
+            arianaImg.removeEventListener('click', heroAriana);
+            wyonaImg.removeEventListener('click', heroWyona);
+            henrietteImg.removeEventListener('click', heroHenriette);
+            setTimeout(() => {
+            alert('Gratulerer, du har vunnet spillet!');
+            }, 1500);
+        }
+        }
 }
 
 function performAttack (heroNum) {
@@ -119,9 +150,9 @@ if (heroesArray.length > 1) {
 
 let { name, maxHP, currentHP, damage } = heroesArray[randomIndex];
 
-showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
 
-// alert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`);
+    showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
+
 
 if (heroesArray[randomIndex].alive) {
   currentHP -= dragonObject.damage;
@@ -142,16 +173,6 @@ if (heroesArray.length === 0) {
 alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
 }
 
-if (dragonObject.currentHP <= 0) {
-daarImg.remove();
-daarHealthTxt.parentNode.parentNode.remove();
-arianaImg.removeEventListener('click', heroAriana);
-wyonaImg.removeEventListener('click', heroWyona);
-henrietteImg.removeEventListener('click', heroHenriette);
-setTimeout(() => {
-  alert('Gratulerer, du har vunnet spillet!');
-}, 1500);
-}
 
 heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP };
 }
