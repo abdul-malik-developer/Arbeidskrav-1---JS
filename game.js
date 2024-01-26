@@ -78,95 +78,93 @@ document.body.addEventListener('keydown', (event) => {
 
 function heroHenriette () {
     performAttack(0);
+    if (dragonObject.alive){
+      setTimeout(() => {
+      dragonAttack();
+      }, 2500);
+    }
     healerBoost();
 }
 
-    function heroAriana() {
-        performAttack(1);
-    
-        if (dragonObject.currentHP > 400) {
-        setTimeout(() => {
-            dragonAttack();
-        }, 2500);
-        } else {
-        if (dragonObject.currentHP <= 0) {
-            daarImg.remove();
-            daarHealthTxt.parentNode.parentNode.remove();
-            arianaImg.removeEventListener('click', heroAriana);
-            wyonaImg.removeEventListener('click', heroWyona);
-            henrietteImg.removeEventListener('click', heroHenriette);
-            setTimeout(() => {
-            alert('Gratulerer, du har vunnet spillet!');
-            }, 1500);
-        }
-        }
-    }
-    
+function heroAriana() {
+    performAttack(1);
+    if (dragonObject.alive){
+    setTimeout(() => {
+    dragonAttack();
+    }, 2500);
+  }
+}
 
 function heroWyona () {
     performAttack(2);
-    if (dragonObject.currentHP >= 400) {
-        setTimeout(() => {
-            dragonAttack();
-        }, 2500);
-        } else {
-        if (dragonObject.currentHP <= 0) {
-            daarImg.remove();
-            daarHealthTxt.parentNode.parentNode.remove();
-            arianaImg.removeEventListener('click', heroAriana);
-            wyonaImg.removeEventListener('click', heroWyona);
-            henrietteImg.removeEventListener('click', heroHenriette);
-            setTimeout(() => {
-            alert('Gratulerer, du har vunnet spillet!');
-            }, 1500);
-        }
-        }
+
+    if (dragonObject.alive){
+      setTimeout(() => {
+      dragonAttack();
+      }, 2500);
+}
 }
 
-function performAttack (heroNum) {
+function performAttack(heroId) {
+  let hero = heroesArray.find((hero) => hero.id === heroId);
 
-let {name,maxHP,currentHP,damage,alive } =  heroesArray[heroNum];
+  let { name, maxHP, currentHP, damage, alive } = hero;
 
-showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, '#FFD700')
 
-// alert(`${name} har gjort ${damage} skade på ${dragonObject.name}`);
+  showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, '#FFD700');
 
-daarHealthTxt.textContent = `${dragonObject.currentHP -= damage} / 2000HP`;
-if (dragonObject.alive){
-    DragonHealthBarColor(dragonObject.currentHP, dragonObject.maxHP);
-}
+  dragonObject.currentHP -= damage;
+  dragonObject.currentHP = Math.max(dragonObject.currentHP, 0);
 
+  daarHealthTxt.textContent = `${dragonObject.currentHP} / ${dragonObject.maxHP}HP`;
+
+  DragonHealthBarColor(dragonObject.currentHP, dragonObject.maxHP);
+
+  if (dragonObject.currentHP === 0) {
+    dragonObject.alive = false;
+    daarImg.remove();
+    daarHealthTxt.parentNode.parentNode.remove();
+    arianaImg.removeEventListener('click', heroAriana);
+    wyonaImg.removeEventListener('click', heroWyona);
+    henrietteImg.removeEventListener('click', heroHenriette);
+    setTimeout(() => {
+    alert('Gratulerer, du har vunnet spillet!');
+  }, 1500)
+  }
 }
 
 function dragonAttack() {
 
 let randomIndex;
 
-if (heroesArray.length > 1) {
+if (heroesArray.length >= 1) {
   randomIndex = Math.floor(Math.random() * heroesArray.length);
+  console.log(randomIndex);
 } else {
   randomIndex = 0;
 }
 
-let { name, maxHP, currentHP, damage } = heroesArray[randomIndex];
+
+
+let { name, maxHP, currentHP, damage, alive } = heroesArray[randomIndex];
 
 
     showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
 
 
-if (heroesArray[randomIndex].alive) {
+if (alive) {
   currentHP -= dragonObject.damage;
   currentHP = Math.max(currentHP, 0);
 
   healthBarColor(randomIndex,currentHP, maxHP)
   healthTxt[randomIndex].textContent = `${currentHP} / ${maxHP} HP`;
+}
 
-  if (currentHP === 0) {
-    heroesArray[randomIndex].alive = false;
-    heroImg[randomIndex].remove();
-    healthTxt[randomIndex].parentNode.parentNode.remove();
-    heroesArray = heroesArray.filter((hero) => hero.alive);
-  }
+if (currentHP === 0) {
+  heroesArray[randomIndex].alive = false;
+  heroImg[randomIndex].remove();
+  healthTxt[randomIndex].parentNode.style = 0.1;
+  heroesArray = heroesArray.filter((hero) => hero.alive);
 }
 
 if (heroesArray.length === 0) {
@@ -175,6 +173,7 @@ alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
 
 
 heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP };
+
 }
 
 function healerBoost() {
