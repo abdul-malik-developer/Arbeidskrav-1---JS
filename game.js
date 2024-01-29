@@ -15,6 +15,8 @@ let daarHealthTxt = document.getElementById('dragon-health-txt');
 const healthTxt = [henrietteHealthTxt, arianalHealthTxt, wyonaHealthTxt];
 const heroImg = [henrietteImg, arianaImg,wyonaImg];
 
+let arrNames = ['healer', 'archer', 'warrior']
+
 
 // Creating the font-family;
 const linkElement = document.createElement('link');
@@ -75,7 +77,6 @@ document.body.addEventListener('keydown', (event) => {
     });
 
 
-
 function heroHenriette () {
     performAttack(0);
     if (dragonObject.alive){
@@ -106,14 +107,15 @@ function heroWyona () {
 }
 
 function performAttack(heroId) {
+
   let hero = heroesArray.find((hero) => hero.id === heroId);
 
   let { name, maxHP, currentHP, damage, alive } = hero;
 
-
   showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, '#FFD700');
 
   dragonObject.currentHP -= damage;
+
   dragonObject.currentHP = Math.max(dragonObject.currentHP, 0);
 
   daarHealthTxt.textContent = `${dragonObject.currentHP} / ${dragonObject.maxHP}HP`;
@@ -128,7 +130,7 @@ function performAttack(heroId) {
     wyonaImg.removeEventListener('click', heroWyona);
     henrietteImg.removeEventListener('click', heroHenriette);
     setTimeout(() => {
-    alert('Gratulerer, du har vunnet spillet!');
+    showAlert('Gratulerer, du har vunnet spillet!','#fff');
   }, 1500)
   }
 }
@@ -137,19 +139,15 @@ function dragonAttack() {
 
 let randomIndex;
 
-if (heroesArray.length >= 1) {
-  randomIndex = Math.floor(Math.random() * heroesArray.length);
-  console.log(randomIndex);
-} else {
-  randomIndex = 0;
-}
+do {
+  randomIndex = Math.floor(Math.random() * 3);
+}while (!heroesArray[randomIndex].alive)
 
 
 
 let { name, maxHP, currentHP, damage, alive } = heroesArray[randomIndex];
 
-
-    showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
+showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
 
 
 if (alive) {
@@ -157,18 +155,19 @@ if (alive) {
   currentHP = Math.max(currentHP, 0);
 
   healthBarColor(randomIndex,currentHP, maxHP)
+  
   healthTxt[randomIndex].textContent = `${currentHP} / ${maxHP} HP`;
 }
 
 if (currentHP === 0) {
   heroesArray[randomIndex].alive = false;
   heroImg[randomIndex].remove();
-  healthTxt[randomIndex].parentNode.style = 0.1;
+  healthTxt[randomIndex].parentNode.parentNode.style.opacity = 0.1;
   heroesArray = heroesArray.filter((hero) => hero.alive);
 }
 
 if (heroesArray.length === 0) {
-alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
+showAlert(`Spillet er tapt! ${dragonObject.name} har vunnet!`, 'red')
 }
 
 
@@ -191,21 +190,19 @@ if (hero.alive && hero.currentHP < hero.maxHP) {
 }
 
 function healthBarColor(index, currentHP, maxHP) {
-let heightPercentage = (currentHP / maxHP) * 100;
-let healthBars = document.getElementsByClassName('healthbar');
-let currentHealthBar = healthBars[index];
-const fixedHeight = 50;
-const heightInPixels = (heightPercentage / 100) * fixedHeight;
-currentHealthBar.style.height = `${heightInPixels}px`;
+  let heightPercentage = (currentHP / maxHP) * 100;
+  const healthBars = document.querySelector(`.${arrNames[index].toLowerCase()}-health`);
+  const fixedHeight = 300;
+  const heightInPixels = (heightPercentage / 100) * fixedHeight;
+  healthBars.style.width = `${heightInPixels}px`;
 }
 
 function DragonHealthBarColor(currentHP,maxHP) {
     let heightPercentage = (currentHP / maxHP) * 100;
-    let healthBars = document.getElementsByClassName('healthbar')[3];
-    let currentHealthBar = healthBars;
-    const fixedHeight = 50;
+    const healthBars = document.querySelector('.dragon-health');
+    const fixedHeight = 300;
     const heightInPixels = (heightPercentage / 100) * fixedHeight;
-    currentHealthBar.style.height = `${heightInPixels}px`;
+    healthBars.style.width = `${heightInPixels}px`;
 }
 
 function showAlert(message, color) {
