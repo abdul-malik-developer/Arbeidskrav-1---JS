@@ -108,19 +108,17 @@ function heroWyona () {
 
 function performAttack(heroId) {
 
-  let hero = heroesArray.find((hero) => hero.id === heroId);
+  const hero = heroesArray.find((hero) => hero.id === heroId);
 
   let { name, maxHP, currentHP, damage, alive } = hero;
 
-  showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, '#FFD700');
+  showAlert(`${name} har gjort ${damage} skade på ${dragonObject.name}`, `#FFD700`);
 
   dragonObject.currentHP -= damage;
 
   dragonObject.currentHP = Math.max(dragonObject.currentHP, 0);
 
   daarHealthTxt.textContent = `${dragonObject.currentHP} / ${dragonObject.maxHP}HP`;
-
-  DragonHealthBarColor(dragonObject.currentHP, dragonObject.maxHP);
 
   if (dragonObject.currentHP === 0) {
     dragonObject.alive = false;
@@ -133,6 +131,8 @@ function performAttack(heroId) {
     showAlert('Gratulerer, du har vunnet spillet!','#fff');
   }, 1500)
   }
+
+  DragonHealthBarColor(dragonObject.currentHP, dragonObject.maxHP);
 }
 
 function dragonAttack() {
@@ -144,34 +144,31 @@ do {
 }while (!heroesArray[randomIndex].alive)
 
 
-
 let { name, maxHP, currentHP, damage, alive } = heroesArray[randomIndex];
 
 showAlert(`${dragonObject.name} har gjort ${dragonObject.damage} skade på ${name}`,'#A30000' )
 
 
-if (alive) {
   currentHP -= dragonObject.damage;
+
   currentHP = Math.max(currentHP, 0);
 
   healthBarColor(randomIndex,currentHP, maxHP)
   
   healthTxt[randomIndex].textContent = `${currentHP} / ${maxHP} HP`;
-}
+
+  // * Important to update the currentHP in the array. 
+  heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP };
 
 if (currentHP === 0) {
   heroesArray[randomIndex].alive = false;
   heroImg[randomIndex].remove();
   healthTxt[randomIndex].parentNode.parentNode.style.opacity = 0.1;
-  heroesArray = heroesArray.filter((hero) => hero.alive);
 }
 
-if (heroesArray.length === 0) {
-showAlert(`Spillet er tapt! ${dragonObject.name} har vunnet!`, 'red')
-}
-
-
-heroesArray[randomIndex] = { ...heroesArray[randomIndex], currentHP };
+if (heroesArray.every(hero => !hero.alive)) {
+  showAlert(`Spillet er tapt! ${dragonObject.name} har vunnet!`, 'red')
+} 
 
 }
 
