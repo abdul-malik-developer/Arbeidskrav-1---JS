@@ -17,8 +17,14 @@ const heroImg = [henrietteImg, arianaImg,wyonaImg];
 
 let arrNames = ['healer', 'archer', 'warrior']
 
+// *  Changing the names of heroes in html. 
 
-// Creating the font-family;
+document.getElementById('healer-name-txt').innerText = 'Henriette';
+document.getElementById('archer-name-txt').innerText = 'Ariana';
+document.getElementById('warrior-name-txt').innerText = 'Wyona'
+
+// *  Creating the font-family;
+
 const linkElement = document.createElement('link');
 linkElement.rel = 'stylesheet';
 linkElement.href = 'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Rubik+Doodle+Shadow&display=swap';
